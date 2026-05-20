@@ -47,6 +47,17 @@ export type PitCrewChief = {
 };
 
 export type UpdatePlanMode = 'safe' | 'medium' | 'aggressive';
+export type PlannedUpgradePart = 'aero' | 'power' | 'reliability';
+
+export type PlannedUpgrade = {
+    id: string;
+    roundNumber: number;
+    part: PlannedUpgradePart;
+    estimatedCost: number;
+    minGain: number;
+    maxGain: number;
+    applied: boolean;
+};
 
 export type Race = {
     id: string;
@@ -159,8 +170,10 @@ export type SaveFile = {
         playerEngineerId: string | null;
         playerPitCrewChiefId: string | null;
         updatePlan: UpdatePlanMode;
+        updatePlanConfirmed: boolean;
         updatesRemaining: number;
         updatesUsedThisSeason: number;
+        plannedUpgrades: PlannedUpgrade[];
         seasonNumber: number;
         seasonLength: number;
         isSeasonComplete: boolean;
