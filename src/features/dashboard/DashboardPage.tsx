@@ -123,7 +123,7 @@ export function DashboardPage() {
             <SectionHeader
                 eyebrow="Race Control"
                 title="Team Dashboard"
-                description="A clean F1-inspired control wall for running your team through the current season."
+                description="Track race form, team performance, and season development status from one control wall."
             />
             {!updatePlanConfirmed && currentRound === 0 ? (
                 <Card title="Season kickoff required">

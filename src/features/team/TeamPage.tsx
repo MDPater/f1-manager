@@ -106,6 +106,9 @@ export function TeamPage() {
                             <div className="mt-3 text-sm text-zinc-300">
                                 Development {engineer.developmentSkill} · Consistency {engineer.consistency}
                             </div>
+                            <div className="mt-3 rounded-xl bg-black/20 p-3 text-xs text-zinc-300">
+                                Affects: update quality range, update cost efficiency, and how stable each factory package is.
+                            </div>
                         </div>
                     ) : (
                         <div className="text-sm text-zinc-400">No engineer selected.</div>
@@ -123,6 +126,9 @@ export function TeamPage() {
                             </div>
                             <div className="mt-3 text-sm text-zinc-300">
                                 Reliability {pitCrewChief.reliabilitySkill} · Consistency {pitCrewChief.consistencySkill}
+                            </div>
+                            <div className="mt-3 rounded-xl bg-black/20 p-3 text-xs text-zinc-300">
+                                Affects: reliability-focused package outcomes, risk reduction on update setbacks, and consistency of rollout timing.
                             </div>
                         </div>
                     ) : (
