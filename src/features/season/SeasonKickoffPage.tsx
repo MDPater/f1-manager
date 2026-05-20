@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Card } from '../../components/ui/Card';
 import { SectionHeader } from '../../components/ui/SectionHeader';
+import { getCountryFlag } from '../../lib/countryFlags';
 import { useGameStore } from '../../store/gameStore';
 import type { UpdatePlanMode } from './types';
 
@@ -40,12 +41,20 @@ export function SeasonKickoffPage() {
             <div className="grid gap-4 xl:grid-cols-2">
                 <Card title="Last Season Top 3 Teams">
                     <div className="space-y-2 text-sm text-zinc-200">
-                        {topTeams.map((team, index) => <div key={team.id}>#{index + 1} {team.name} · {team.points} pts</div>)}
+                        {topTeams.map((team, index) => (
+                            <div key={team.id}>
+                                #{index + 1} {getCountryFlag(team.country)} {team.name} · {team.points} pts
+                            </div>
+                        ))}
                     </div>
                 </Card>
                 <Card title="Hall of Fame Snapshot (Top OVR Drivers)">
                     <div className="space-y-2 text-sm text-zinc-200">
-                        {topDrivers.map((driver, index) => <div key={driver.id}>#{index + 1} {driver.name} · OVR {driver.overall}</div>)}
+                        {topDrivers.map((driver, index) => (
+                            <div key={driver.id}>
+                                #{index + 1} {getCountryFlag(driver.country)} {driver.name} · OVR {driver.overall}
+                            </div>
+                        ))}
                     </div>
                 </Card>
             </div>
