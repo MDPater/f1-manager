@@ -62,6 +62,7 @@ export function DashboardPage() {
     const drivers = useGameStore((state) => state.drivers);
     const teamRosters = useGameStore((state) => state.teamRosters);
     const seasonNumber = useGameStore((state) => state.seasonNumber);
+    const updatePlanConfirmed = useGameStore((state) => state.updatePlanConfirmed);
 
     const nextRace = calendar[currentRound];
     const latest = history[history.length - 1];
@@ -124,6 +125,12 @@ export function DashboardPage() {
                 title="Team Dashboard"
                 description="A clean F1-inspired control wall for running your team through the current season."
             />
+            {!updatePlanConfirmed && currentRound === 0 ? (
+                <Card title="Season kickoff required">
+                    <p className="text-sm text-zinc-300">Before race 1, you must confirm your factory update plan.</p>
+                    <Link to="/season-kickoff" className="mt-3 inline-flex rounded-2xl bg-red-500 px-4 py-2 font-semibold text-white">Open Season Kickoff</Link>
+                </Card>
+            ) : null}
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 <StatCard label="Team Points" value={`${playerTeam.points}`} hint="Constructor total this season" />

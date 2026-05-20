@@ -17,6 +17,7 @@ export function RaceWeekendPage() {
     const calendar = useGameStore((state) => state.calendar);
     const isSeasonComplete = useGameStore((state) => state.isSeasonComplete);
     const seasonNumber = useGameStore((state) => state.seasonNumber);
+    const updatePlanConfirmed = useGameStore((state) => state.updatePlanConfirmed);
 
     const nextRace = calendar[currentRound];
     const latest = history[history.length - 1];
@@ -96,12 +97,18 @@ export function RaceWeekendPage() {
 
             {nextRace && (
                 <Card title="Simulation Control">
-                    <button
-                        className="rounded-2xl border border-red-500/30 bg-red-500 px-5 py-3 font-semibold text-white transition hover:opacity-90"
-                        onClick={runNextRace}
-                    >
-                        Simulate Next Race
-                    </button>
+                    {updatePlanConfirmed ? (
+                        <button
+                            className="rounded-2xl border border-red-500/30 bg-red-500 px-5 py-3 font-semibold text-white transition hover:opacity-90"
+                            onClick={runNextRace}
+                        >
+                            Simulate Next Race
+                        </button>
+                    ) : (
+                        <Link to="/season-kickoff" className="inline-flex rounded-2xl bg-red-500 px-5 py-3 font-semibold text-white hover:opacity-90">
+                            Confirm Plan First
+                        </Link>
+                    )}
                 </Card>
             )}
 

@@ -14,6 +14,7 @@ export function FactoryPage() {
   const setUpdatePlan = useGameStore((s) => s.setUpdatePlan);
   const confirmUpdatePlan = useGameStore((s) => s.confirmUpdatePlan);
   const currentRound = useGameStore((s) => s.currentRound);
+  const lastUpgradeReport = useGameStore((s) => s.lastUpgradeReport);
   const [msg, setMsg] = useState<string | null>(null);
 
   const planDescriptions: Record<UpdatePlanMode, string> = {
@@ -47,6 +48,15 @@ export function FactoryPage() {
     </Card>
     <Card title="Scheduled upgrades (after confirmation)">
       {plannedUpgrades.length === 0 ? <p className="text-sm text-zinc-400">No schedule yet. Confirm your plan before the season starts.</p> : <div className="space-y-2">{plannedUpgrades.map((u) => <div key={u.id} className="rounded-xl bg-white/5 p-3 text-sm text-zinc-200">Round {u.roundNumber}: <span className="font-semibold text-white">{u.part}</span> (+{u.minGain} to +{u.maxGain}) · est. ${u.estimatedCost.toLocaleString()} · {u.applied ? 'Applied' : 'Pending'}</div>)}</div>}
+    </Card>
+    <Card title="Latest factory update result">
+      {lastUpgradeReport ? (
+        <p className="text-sm text-zinc-200">
+          Season {lastUpgradeReport.seasonNumber}, Round {lastUpgradeReport.roundNumber}: {lastUpgradeReport.part} improved by +{lastUpgradeReport.gain} for ${lastUpgradeReport.cost.toLocaleString()}.
+        </p>
+      ) : (
+        <p className="text-sm text-zinc-400">No update has been applied yet this season.</p>
+      )}
     </Card>
   </div>;
 }

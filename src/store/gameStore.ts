@@ -41,6 +41,7 @@ import type {
     TeamRoster,
     PlannedUpgrade,
     PlannedUpgradePart,
+    LastUpgradeReport,
     UpdatePlanMode,
 } from '../features/season/types';
 
@@ -94,6 +95,7 @@ type GameState = {
     updatesUsedThisSeason: number;
     updatePlanConfirmed: boolean;
     plannedUpgrades: PlannedUpgrade[];
+    lastUpgradeReport: LastUpgradeReport | null;
 
     activeSaveId: string | null;
     activeSaveName: string | null;
@@ -391,6 +393,7 @@ function buildSaveFile(state: GameState): SaveFile | null {
             updatesRemaining: state.updatesRemaining,
             updatesUsedThisSeason: state.updatesUsedThisSeason,
             plannedUpgrades: state.plannedUpgrades,
+            lastUpgradeReport: state.lastUpgradeReport,
             seasonNumber: state.seasonNumber,
             seasonLength: state.seasonLength,
             isSeasonComplete: state.isSeasonComplete,
@@ -435,6 +438,7 @@ export const useGameStore = create<GameState>((set, get) => {
         updatesRemaining: getUpdateSlotsForPlan('medium', null, null),
         updatesUsedThisSeason: 0,
         plannedUpgrades: [],
+        lastUpgradeReport: null,
 
         activeSaveId: null,
         activeSaveName: null,
@@ -854,6 +858,7 @@ export const useGameStore = create<GameState>((set, get) => {
                 ),
                 updatesUsedThisSeason: 0,
                 plannedUpgrades: [],
+                lastUpgradeReport: null,
 
                 createNewCareerFromSetup: get().createNewCareerFromSetup,
                 loadCareer: get().loadCareer,
@@ -941,6 +946,7 @@ export const useGameStore = create<GameState>((set, get) => {
                     ),
                 updatesUsedThisSeason: save.game.updatesUsedThisSeason ?? 0,
                 plannedUpgrades: save.game.plannedUpgrades ?? [],
+                lastUpgradeReport: save.game.lastUpgradeReport ?? null,
 
                 currentRound: save.game.currentRound,
                 history: save.game.history,
@@ -989,6 +995,7 @@ export const useGameStore = create<GameState>((set, get) => {
         runNextRace: () =>
             set((state) => {
                 if (state.isSeasonComplete) return state;
+                if (!state.updatePlanConfirmed) return state;
 
                 const race = state.calendar[state.currentRound];
                 if (!race) return state;
@@ -1037,6 +1044,7 @@ export const useGameStore = create<GameState>((set, get) => {
                 let nextPlannedUpgrades = state.plannedUpgrades;
                 let nextUpdatesUsed = state.updatesUsedThisSeason;
                 let nextUpdatesRemaining = state.updatesRemaining;
+                let nextLastUpgradeReport = state.lastUpgradeReport;
                 if (scheduledUpgrade) {
                     const gain =
                         scheduledUpgrade.minGain +
@@ -1061,6 +1069,13 @@ export const useGameStore = create<GameState>((set, get) => {
                     );
                     nextUpdatesUsed += 1;
                     nextUpdatesRemaining = Math.max(0, nextUpdatesRemaining - 1);
+                    nextLastUpgradeReport = {
+                        roundNumber: raceRoundNumber,
+                        part: scheduledUpgrade.part,
+                        gain,
+                        cost: scheduledUpgrade.estimatedCost,
+                        seasonNumber: state.seasonNumber,
+                    };
                 }
 
                 const nextCurrentRound = state.currentRound + 1;
@@ -1101,6 +1116,7 @@ export const useGameStore = create<GameState>((set, get) => {
                     plannedUpgrades: nextPlannedUpgrades,
                     updatesUsedThisSeason: nextUpdatesUsed,
                     updatesRemaining: nextUpdatesRemaining,
+                    lastUpgradeReport: nextLastUpgradeReport,
                 };
 
                 if (seasonComplete) {
@@ -1329,6 +1345,7 @@ export const useGameStore = create<GameState>((set, get) => {
                     updatesUsedThisSeason: 0,
                     updatePlanConfirmed: false,
                     plannedUpgrades: [],
+                    lastUpgradeReport: null,
 
                     createNewCareerFromSetup: state.createNewCareerFromSetup,
                     loadCareer: state.loadCareer,

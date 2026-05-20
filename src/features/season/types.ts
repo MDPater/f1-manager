@@ -59,6 +59,14 @@ export type PlannedUpgrade = {
     applied: boolean;
 };
 
+export type LastUpgradeReport = {
+    roundNumber: number;
+    part: PlannedUpgradePart;
+    gain: number;
+    cost: number;
+    seasonNumber: number;
+};
+
 export type Race = {
     id: string;
     name: string;
@@ -174,6 +182,7 @@ export type SaveFile = {
         updatesRemaining: number;
         updatesUsedThisSeason: number;
         plannedUpgrades: PlannedUpgrade[];
+        lastUpgradeReport: LastUpgradeReport | null;
         seasonNumber: number;
         seasonLength: number;
         isSeasonComplete: boolean;
