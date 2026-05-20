@@ -8,6 +8,7 @@ import { MarketPage } from '../features/market/MarketPage';
 import { RaceWeekendPage } from '../features/race/RaceWeekendPage';
 import { ResultsPage } from '../features/results/ResultsPage';
 import { SeasonOverviewPage } from '../features/season/SeasonOverviewPage';
+import { SeasonKickoffPage } from '../features/season/SeasonKickoffPage';
 import { StandingsPage } from '../features/standings/StandingsPage';
 import { TeamPage } from '../features/team/TeamPage';
 import { OffSeasonPage } from '../features/offseason/OffSeasonPage';
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
             { path: 'standings', element: <StandingsPage /> },
             { path: 'drivers/:driverId', element: <DriverDetailPage /> },
             { path: 'season-overview', element: <SeasonOverviewPage /> },
+            { path: 'season-kickoff', element: <SeasonKickoffPage /> },
             { path: 'offseason', element: <OffSeasonPage /> },
             { path: 'hall-of-fame', element: <HallOfFamePage /> },
         ],

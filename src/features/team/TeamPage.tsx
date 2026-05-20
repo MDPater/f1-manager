@@ -16,6 +16,11 @@ export function TeamPage() {
     const pitCrewChiefs = useGameStore((state) => state.pitCrewChiefs);
     const playerEngineerId = useGameStore((state) => state.playerEngineerId);
     const playerPitCrewChiefId = useGameStore((state) => state.playerPitCrewChiefId);
+    const updatePlan = useGameStore((state) => state.updatePlan);
+    const updatePlanConfirmed = useGameStore((state) => state.updatePlanConfirmed);
+    const plannedUpgrades = useGameStore((state) => state.plannedUpgrades);
+    const currentRound = useGameStore((state) => state.currentRound);
+    const updatesRemaining = useGameStore((state) => state.updatesRemaining);
 
     const selectedTeamId = teamId ?? playerTeamId;
     const selectedTeam = teams.find((team) => team.id === selectedTeamId) ?? teams[0];
@@ -101,6 +106,9 @@ export function TeamPage() {
                             <div className="mt-3 text-sm text-zinc-300">
                                 Development {engineer.developmentSkill} · Consistency {engineer.consistency}
                             </div>
+                            <div className="mt-3 rounded-xl bg-black/20 p-3 text-xs text-zinc-300">
+                                Affects: update quality range, update cost efficiency, and how stable each factory package is.
+                            </div>
                         </div>
                     ) : (
                         <div className="text-sm text-zinc-400">No engineer selected.</div>
@@ -119,12 +127,31 @@ export function TeamPage() {
                             <div className="mt-3 text-sm text-zinc-300">
                                 Reliability {pitCrewChief.reliabilitySkill} · Consistency {pitCrewChief.consistencySkill}
                             </div>
+                            <div className="mt-3 rounded-xl bg-black/20 p-3 text-xs text-zinc-300">
+                                Affects: reliability-focused package outcomes, risk reduction on update setbacks, and consistency of rollout timing.
+                            </div>
                         </div>
                     ) : (
                         <div className="text-sm text-zinc-400">No pit crew chief selected.</div>
                     )}
                 </Card>
             </div>
+            {isPlayerTeam && updatePlanConfirmed && currentRound > 0 ? (
+                <Card title="Factory update timeline">
+                    <p className="mb-3 text-sm text-zinc-300">
+                        Plan: <span className="font-semibold text-white">{updatePlan}</span> · Remaining updates:{' '}
+                        <span className="font-semibold text-white">{updatesRemaining}</span>
+                    </p>
+                    <div className="space-y-2">
+                        {plannedUpgrades.map((upgrade) => (
+                            <div key={upgrade.id} className="rounded-xl bg-white/5 p-3 text-sm text-zinc-200">
+                                Round {upgrade.roundNumber}: <span className="font-semibold text-white">{upgrade.part}</span>{' '}
+                                (+{upgrade.minGain} to +{upgrade.maxGain}) · {upgrade.applied ? 'Applied' : 'Pending'}
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+            ) : null}
         </div>
     );
 }
